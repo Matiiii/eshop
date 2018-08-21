@@ -10,6 +10,7 @@ buildNumber.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+<<<<<<< HEAD
 
 # Compiled class file
 *.class
@@ -131,3 +132,5 @@ local.properties
 
 
 # End of https://www.gitignore.io/api/eclipse
+=======
+>>>>>>> a51bf7aa6a803b979714b5274aef9e363b946f0c
