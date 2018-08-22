@@ -6,6 +6,6 @@ public interface CustomerService {
 
 	CustomerTO saveNewCustomer(CustomerTO newCustomer);
 
-	CustomerTO findEmployeeById(Long id);
+	CustomerTO findCustomerById(Long id);
 
 }

@@ -10,7 +10,7 @@ public class ProductTO {
 	private String name;
 	private Double price;
 	private Double retailMargin;
-	private int weightInGrams;
+	private Integer weight;
 
 	private List<Long> orders = new ArrayList<>();
 
@@ -21,13 +21,13 @@ public class ProductTO {
 	public ProductTO() {
 	}
 
-	public ProductTO(Long id, String name, Double price, Double retailMargin, int weightInGrams, List<Long> orders,
+	public ProductTO(Long id, String name, Double price, Double retailMargin, Integer weight, List<Long> orders,
 			int version, Date created, Date updated) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.retailMargin = retailMargin;
-		this.weightInGrams = weightInGrams;
+		this.weight = weight;
 		this.orders = orders;
 		this.version = version;
 		this.created = created;
@@ -66,12 +66,12 @@ public class ProductTO {
 		this.retailMargin = retailMargin;
 	}
 
-	public int getWeightInGrams() {
-		return weightInGrams;
+	public Integer getWeight() {
+		return weight;
 	}
 
-	public void setWeightInGrams(int weightInGrams) {
-		this.weightInGrams = weightInGrams;
+	public void setWeight(Integer weight) {
+		this.weight = weight;
 	}
 
 	public List<Long> getOrders() {
@@ -116,13 +116,13 @@ public class ProductTO {
 		private String name;
 		private Double price;
 		private Double retailMargin;
-		private int weightInGrams;
+		private Integer weight;
 
 		private List<Long> orders = new ArrayList<>();
 
 		private int version;
-		private Date created = null;
-		private Date updated = null;
+		private Date created;
+		private Date updated;
 
 		public ProductTOBuilder id(Long id) {
 			this.id = id;
@@ -149,8 +149,8 @@ public class ProductTO {
 			return this;
 		}
 
-		public ProductTOBuilder weightInGrams(int weightInGrams) {
-			this.weightInGrams = weightInGrams;
+		public ProductTOBuilder weight(Integer weight) {
+			this.weight = weight;
 
 			return this;
 		}
@@ -172,14 +172,14 @@ public class ProductTO {
 		}
 
 		private void checkBeforeBuild() {
-			if (name == null || retailMargin == null || price == null || orders.isEmpty() || weightInGrams < 0) {
+			if (name == null || price == null || retailMargin == null || weight < 0) {
 				throw new RuntimeException("Invalid product created");
 			}
 		}
 
 		public ProductTO build() {
 			checkBeforeBuild();
-			return new ProductTO(id, name, price, retailMargin, weightInGrams, orders, version, created, updated);
+			return new ProductTO(id, name, price, retailMargin, weight, orders, version, created, updated);
 
 		}
 

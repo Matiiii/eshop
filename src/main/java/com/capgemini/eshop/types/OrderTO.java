@@ -11,8 +11,10 @@ public class OrderTO {
 	private Date date;
 	private Status currentStatus;
 	private List<Long> products;
+
 	private Long customer;
 
+	private int countProducts;
 	private int version;
 	private Date created;
 	private Date updated;
@@ -30,6 +32,8 @@ public class OrderTO {
 		this.version = version;
 		this.created = created;
 		this.updated = updated;
+
+		this.countProducts = products.size();
 
 	}
 
@@ -63,6 +67,7 @@ public class OrderTO {
 
 	public void setProducts(List<Long> products) {
 		this.products = products;
+		this.countProducts = products.size();
 	}
 
 	public int getVersion() {

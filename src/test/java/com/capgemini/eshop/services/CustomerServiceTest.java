@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.eshop.service.CustomerService;
 import com.capgemini.eshop.types.CustomerTO;
@@ -23,16 +22,15 @@ public class CustomerServiceTest {
 	@Autowired
 	CustomerService customerService;
 
-	@Transactional
 	@Test
-	public void shouldGetEmployeeById() {
+	public void shouldGetCustomerById() {
 
 		// given
 
-		CustomerTO savedCustomer = dataCreator.saveNewCustomerKrzysztof();
+		CustomerTO savedCustomer = dataCreator.saveNewCustomerJanusz();
 		// when
 
-		CustomerTO selectedCustomer = customerService.findEmployeeById(savedCustomer.getId());
+		CustomerTO selectedCustomer = customerService.findCustomerById(savedCustomer.getId());
 
 		// then
 		assertNotNull(selectedCustomer);

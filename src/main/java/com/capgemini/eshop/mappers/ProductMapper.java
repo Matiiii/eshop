@@ -22,9 +22,8 @@ public class ProductMapper {
 
 			return ProductTO.builder().id(productEntity.getId()).name(productEntity.getName())
 					.price(productEntity.getPrice()).retailMargin(productEntity.getRetailMargin())
-					.weightInGrams(productEntity.getWeightInGrams()).orders(ordersId)
-					.version(productEntity.getVersion()).created(productEntity.getCreated())
-					.updated(productEntity.getUpdated()).build();
+					.weight(productEntity.getWeight()).orders(ordersId).version(productEntity.getVersion())
+					.created(productEntity.getCreated()).updated(productEntity.getUpdated()).build();
 		}
 
 		return null;
@@ -37,8 +36,8 @@ public class ProductMapper {
 			productEntity.setId(productTO.getId());
 			productEntity.setName(productTO.getName());
 			productEntity.setPrice(productTO.getPrice());
-			productEntity.setRetailMargin(productEntity.getRetailMargin());
-			productEntity.setWeightInGrams(productEntity.getWeightInGrams());
+			productEntity.setRetailMargin(productTO.getRetailMargin());
+			productEntity.setWeight(productTO.getWeight());
 			productEntity.setVersion(productTO.getVersion());
 
 			return productEntity;

@@ -1,5 +1,6 @@
 package com.capgemini.eshop.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -17,12 +20,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.capgemini.eshop.domain.embeddable.Audit;
 import com.capgemini.eshop.enums.Status;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class OrderEntity extends Audit {
 
 	/**
@@ -43,7 +48,10 @@ public class OrderEntity extends Audit {
 	@JoinTable(name = "order_product", joinColumns = {
 			@JoinColumn(name = "order_id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "product_id", nullable = false, updatable = false) })
-	private List<ProductEntity> products;
+	private List<ProductEntity> products = new ArrayList<>();
+
+	@Transient
+	private int countProducts;
 
 	@ManyToOne
 	private CustomerEntity customer;
@@ -58,6 +66,8 @@ public class OrderEntity extends Audit {
 		this.currentStatus = currentStatus;
 		this.products = products;
 		this.customer = customer;
+
+		this.countProducts = products.size();
 	}
 
 	public Long getId() {
@@ -83,6 +93,7 @@ public class OrderEntity extends Audit {
 
 	public void setProducts(List<ProductEntity> products) {
 		this.products = products;
+		this.countProducts = products.size();
 	}
 
 	public Date getDate() {

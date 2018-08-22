@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public CustomerTO findEmployeeById(Long id) {
+	public CustomerTO findCustomerById(Long id) {
 		CustomerEntity selectedCustomer = customerRepository.findOne(id);
 		return customerMapper.map(selectedCustomer);
 	}

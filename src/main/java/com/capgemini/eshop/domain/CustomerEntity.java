@@ -5,9 +5,12 @@ import java.util.Set;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,6 +20,7 @@ import com.capgemini.eshop.domain.embeddable.PersonalDetail;
 
 @Entity
 @Table(name = "customer")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class CustomerEntity extends Audit {
 
 	/**
@@ -34,7 +38,7 @@ public class CustomerEntity extends Audit {
 	@Embedded
 	private Address address;
 
-	@OneToMany
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
 	private Set<OrderEntity> orders = new HashSet<>();
 
 	public CustomerEntity() {

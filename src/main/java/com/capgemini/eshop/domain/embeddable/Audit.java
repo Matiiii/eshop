@@ -7,8 +7,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.Version;
 
 @MappedSuperclass
@@ -22,11 +22,11 @@ public abstract class Audit implements Serializable {
 	@Version
 	private int version;
 
-	@CreatedDate
+	@CreationTimestamp
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date created;
 
-	@LastModifiedDate
+	@UpdateTimestamp
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date updated;
 
