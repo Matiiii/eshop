@@ -1,8 +1,8 @@
 package com.capgemini.eshop.types;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProductTO {
 
@@ -12,7 +12,7 @@ public class ProductTO {
 	private Double retailMargin;
 	private Integer weight;
 
-	private List<Long> orders = new ArrayList<>();
+	private Set<Long> transactions = new HashSet<>();
 
 	private int version;
 	private Date created;
@@ -21,14 +21,14 @@ public class ProductTO {
 	public ProductTO() {
 	}
 
-	public ProductTO(Long id, String name, Double price, Double retailMargin, Integer weight, List<Long> orders,
+	public ProductTO(Long id, String name, Double price, Double retailMargin, Integer weight, Set<Long> transactions,
 			int version, Date created, Date updated) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.retailMargin = retailMargin;
 		this.weight = weight;
-		this.orders = orders;
+		this.transactions = transactions;
 		this.version = version;
 		this.created = created;
 		this.updated = updated;
@@ -74,12 +74,12 @@ public class ProductTO {
 		this.weight = weight;
 	}
 
-	public List<Long> getOrders() {
-		return orders;
+	public Set<Long> getTransactions() {
+		return transactions;
 	}
 
-	public void setOrders(List<Long> orders) {
-		this.orders = orders;
+	public void setTransactions(Set<Long> orders) {
+		this.transactions = orders;
 	}
 
 	public int getVersion() {
@@ -118,7 +118,7 @@ public class ProductTO {
 		private Double retailMargin;
 		private Integer weight;
 
-		private List<Long> orders = new ArrayList<>();
+		private Set<Long> transactions = new HashSet<>();
 
 		private int version;
 		private Date created;
@@ -144,8 +144,8 @@ public class ProductTO {
 			return this;
 		}
 
-		public ProductTOBuilder orders(List<Long> orders) {
-			this.orders = orders;
+		public ProductTOBuilder transactions(Set<Long> transactions) {
+			this.transactions = transactions;
 			return this;
 		}
 
@@ -179,7 +179,7 @@ public class ProductTO {
 
 		public ProductTO build() {
 			checkBeforeBuild();
-			return new ProductTO(id, name, price, retailMargin, weight, orders, version, created, updated);
+			return new ProductTO(id, name, price, retailMargin, weight, transactions, version, created, updated);
 
 		}
 

@@ -37,4 +37,26 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.map(product);
 	}
 
+	@Override
+	public ProductTO updateProduct(ProductTO product) {
+		ProductEntity productBeforeUpdate = productRepository.findOne(product.getId());
+		ProductEntity productToUpdate = productMapper.map(product);
+		productToUpdate.setTransactions(productBeforeUpdate.getTransactions());
+
+		ProductEntity savedProduct = productRepository.save(productToUpdate);
+
+		return productMapper.map(savedProduct);
+	}
+
+	@Override
+	public void removeProduct(Long id) {
+		if (productRepository.exists(id)) {
+
+			productRepository.delete(id);
+		} else {
+			throw new RuntimeException("Product with id: " + id + " not exist!");
+		}
+
+	}
+
 }

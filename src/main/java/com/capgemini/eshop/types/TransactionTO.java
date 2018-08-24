@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.capgemini.eshop.enums.Status;
 
-public class OrderTO {
+public class TransactionTO {
 
 	private Long id;
 	private Date date;
@@ -19,10 +19,10 @@ public class OrderTO {
 	private Date created;
 	private Date updated;
 
-	public OrderTO() {
+	public TransactionTO() {
 	}
 
-	public OrderTO(Long id, Date date, Status currentStatus, List<Long> products, Long customer, int version,
+	public TransactionTO(Long id, Date date, Status currentStatus, List<Long> products, Long customer, int version,
 			Date created, Date updated) {
 		this.id = id;
 		this.date = date;
@@ -165,9 +165,9 @@ public class OrderTO {
 			}
 		}
 
-		public OrderTO build() {
+		public TransactionTO build() {
 			checkBeforeBuild();
-			return new OrderTO(id, date, currentStatus, products, customer, version, created, updated);
+			return new TransactionTO(id, date, currentStatus, products, customer, version, created, updated);
 
 		}
 

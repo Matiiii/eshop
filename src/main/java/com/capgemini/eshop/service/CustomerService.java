@@ -8,4 +8,8 @@ public interface CustomerService {
 
 	CustomerTO findCustomerById(Long id);
 
+	CustomerTO updateCustomer(CustomerTO customerToUpdate);
+
+	void removeCustomer(Long id);
+
 }

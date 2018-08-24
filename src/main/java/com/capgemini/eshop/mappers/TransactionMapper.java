@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.capgemini.eshop.domain.OrderEntity;
-import com.capgemini.eshop.types.OrderTO;
+import com.capgemini.eshop.domain.TransactionEntity;
+import com.capgemini.eshop.types.TransactionTO;
 
 @Component
-public class OrderMapper {
+public class TransactionMapper {
 
-	public OrderTO map(OrderEntity orderEntity) {
+	public TransactionTO map(TransactionEntity orderEntity) {
 		if (orderEntity != null) {
 
 			List<Long> productsId = new ArrayList<>();
@@ -21,7 +21,7 @@ public class OrderMapper {
 				orderEntity.getProducts().stream().forEach(products -> productsId.add(products.getId()));
 			}
 
-			return OrderTO.builder().id(orderEntity.getId()).date(orderEntity.getDate())
+			return TransactionTO.builder().id(orderEntity.getId()).date(orderEntity.getDate())
 					.currentStatus(orderEntity.getCurrentStatus()).products(productsId)
 					.customer(orderEntity.getCustomer().getId()).version(orderEntity.getVersion())
 					.created(orderEntity.getCreated()).updated(orderEntity.getUpdated()).build();
@@ -30,10 +30,10 @@ public class OrderMapper {
 		return null;
 	}
 
-	public OrderEntity map(OrderTO orderTO) {
+	public TransactionEntity map(TransactionTO orderTO) {
 		if (orderTO != null) {
 
-			OrderEntity orderEntity = new OrderEntity();
+			TransactionEntity orderEntity = new TransactionEntity();
 			orderEntity.setId(orderTO.getId());
 			orderEntity.setDate(orderTO.getDate());
 			orderEntity.setCurrentStatus(orderTO.getCurrentStatus());
@@ -45,12 +45,12 @@ public class OrderMapper {
 		return null;
 	}
 
-	public Set<OrderTO> map2To(Set<OrderEntity> orderEntity) {
+	public Set<TransactionTO> map2To(Set<TransactionEntity> orderEntity) {
 		return orderEntity.stream().map(this::map).collect(Collectors.toSet());
 
 	}
 
-	public Set<OrderEntity> map2Entity(Set<OrderTO> orderTO) {
+	public Set<TransactionEntity> map2Entity(Set<TransactionTO> orderTO) {
 		return orderTO.stream().map(this::map).collect(Collectors.toSet());
 	}
 

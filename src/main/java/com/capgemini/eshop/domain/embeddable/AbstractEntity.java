@@ -3,16 +3,17 @@ package com.capgemini.eshop.domain.embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Version;
 
 @MappedSuperclass
-public abstract class Audit implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
 	/**
 	 * 
@@ -23,11 +24,13 @@ public abstract class Audit implements Serializable {
 	private int version;
 
 	@CreationTimestamp
-	@Temporal(value = TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(updatable = false)
 	private Date created;
 
 	@UpdateTimestamp
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column
 	private Date updated;
 
 	public int getVersion() {

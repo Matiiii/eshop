@@ -22,17 +22,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.capgemini.eshop.domain.embeddable.Audit;
+import com.capgemini.eshop.domain.embeddable.AbstractEntity;
 import com.capgemini.eshop.enums.Status;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "transaction")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class OrderEntity extends Audit {
+public class TransactionEntity extends AbstractEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4246434942616898328L;
 
 	@Id
@@ -42,6 +39,7 @@ public class OrderEntity extends Audit {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
+	@Enumerated(EnumType.STRING)
 	private Status currentStatus;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -56,10 +54,10 @@ public class OrderEntity extends Audit {
 	@ManyToOne
 	private CustomerEntity customer;
 
-	public OrderEntity() {
+	public TransactionEntity() {
 	}
 
-	public OrderEntity(Long id, Date date, Status currentStatus, List<ProductEntity> products,
+	public TransactionEntity(Long id, Date date, Status currentStatus, List<ProductEntity> products,
 			CustomerEntity customer) {
 		this.id = id;
 		this.date = date;
@@ -110,6 +108,12 @@ public class OrderEntity extends Audit {
 
 	public void setCustomer(CustomerEntity customer) {
 		this.customer = customer;
+	}
+
+	@Override
+	public String toString() {
+		return "TransactionEntity [id=" + id + ", date=" + date + ", currentStatus=" + currentStatus + ", products="
+				+ products + ", countProducts=" + countProducts + ", customer=" + customer + "]";
 	}
 
 }

@@ -3,6 +3,7 @@ package com.capgemini.eshop.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,18 +15,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.capgemini.eshop.domain.embeddable.AbstractEntity;
 import com.capgemini.eshop.domain.embeddable.Address;
-import com.capgemini.eshop.domain.embeddable.Audit;
 import com.capgemini.eshop.domain.embeddable.PersonalDetail;
 
 @Entity
 @Table(name = "customer")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class CustomerEntity extends Audit {
+public class CustomerEntity extends AbstractEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4430411239947745851L;
 
 	@Id
@@ -38,13 +36,13 @@ public class CustomerEntity extends Audit {
 	@Embedded
 	private Address address;
 
-	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-	private Set<OrderEntity> orders = new HashSet<>();
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.REMOVE)
+	private Set<TransactionEntity> orders = new HashSet<>();
 
 	public CustomerEntity() {
 	}
 
-	public CustomerEntity(Long id, PersonalDetail personalDetail, Address address, Set<OrderEntity> orders) {
+	public CustomerEntity(Long id, PersonalDetail personalDetail, Address address, Set<TransactionEntity> orders) {
 		this.id = id;
 		this.personalDetail = personalDetail;
 		this.address = address;
@@ -75,12 +73,18 @@ public class CustomerEntity extends Audit {
 		this.address = address;
 	}
 
-	public Set<OrderEntity> getOrders() {
+	public Set<TransactionEntity> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(Set<OrderEntity> orders) {
+	public void setOrders(Set<TransactionEntity> orders) {
 		this.orders = orders;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerEntity [id=" + id + ", personalDetail=" + personalDetail + ", address=" + address + ", orders="
+				+ orders + "]";
 	}
 
 }

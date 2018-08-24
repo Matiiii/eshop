@@ -12,11 +12,11 @@ import com.capgemini.eshop.domain.embeddable.Address;
 import com.capgemini.eshop.domain.embeddable.PersonalDetail;
 import com.capgemini.eshop.enums.Status;
 import com.capgemini.eshop.service.CustomerService;
-import com.capgemini.eshop.service.OrderService;
 import com.capgemini.eshop.service.ProductService;
+import com.capgemini.eshop.service.TransactionService;
 import com.capgemini.eshop.types.CustomerTO;
-import com.capgemini.eshop.types.OrderTO;
 import com.capgemini.eshop.types.ProductTO;
+import com.capgemini.eshop.types.TransactionTO;
 
 @Component
 public class DataCreator {
@@ -25,7 +25,8 @@ public class DataCreator {
 	CustomerService customerService;
 
 	@Autowired
-	OrderService orderService;
+	TransactionService orderService;
+
 	@Autowired
 	ProductService productService;
 
@@ -67,12 +68,12 @@ public class DataCreator {
 
 	}
 
-	public OrderTO seveNewProductsOrderForCustomer(Long customerId, List<Long> productsId) {
+	public TransactionTO seveNewProductsOrderForCustomer(Long customerId, List<Long> productsId) {
 
-		OrderTO orderTosave = OrderTO.builder().date(new Date()).currentStatus(Status.WAITING_FOR_PAYMENT)
+		TransactionTO orderTosave = TransactionTO.builder().date(new Date()).currentStatus(Status.WAITING_FOR_PAYMENT)
 				.products(productsId).customer(customerId).build();
 
-		return orderService.saveNewOrder(orderTosave);
+		return orderService.saveNewTransaction(orderTosave);
 	}
 
 	public ProductTO saveNewProductMajty() {
@@ -85,9 +86,19 @@ public class DataCreator {
 
 	public ProductTO saveNewProductMlotek() {
 
-		ProductTO productToSave = ProductTO.builder().name("Młotek").price(50.0).retailMargin(5.0).weight(500).build();
+		ProductTO productToSave = ProductTO.builder().name("Młotek").price(500.0).retailMargin(25.0).weight(500)
+				.build();
 
 		return productService.saveNewProduct(productToSave);
+	}
+
+	public ProductTO saveNewProductTv() {
+
+		ProductTO productToSave = ProductTO.builder().name("Telewizor").price(8000.0).retailMargin(25.0).weight(500)
+				.build();
+
+		return productService.saveNewProduct(productToSave);
+
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.capgemini.eshop.mappers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,14 +14,14 @@ public class ProductMapper {
 	public ProductTO map(ProductEntity productEntity) {
 		if (productEntity != null) {
 
-			List<Long> ordersId = new ArrayList<>();
-			if (!productEntity.getOrders().isEmpty()) {
-				productEntity.getOrders().stream().forEach(orders -> ordersId.add(orders.getId()));
+			Set<Long> ordersId = new HashSet<>();
+			if (!productEntity.getTransactions().isEmpty()) {
+				productEntity.getTransactions().stream().forEach(orders -> ordersId.add(orders.getId()));
 			}
 
 			return ProductTO.builder().id(productEntity.getId()).name(productEntity.getName())
 					.price(productEntity.getPrice()).retailMargin(productEntity.getRetailMargin())
-					.weight(productEntity.getWeight()).orders(ordersId).version(productEntity.getVersion())
+					.weight(productEntity.getWeight()).transactions(ordersId).version(productEntity.getVersion())
 					.created(productEntity.getCreated()).updated(productEntity.getUpdated()).build();
 		}
 

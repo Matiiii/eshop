@@ -8,4 +8,8 @@ public interface ProductService {
 
 	ProductTO findProductById(Long id);
 
+	ProductTO updateProduct(ProductTO product);
+
+	void removeProduct(Long id);
+
 }

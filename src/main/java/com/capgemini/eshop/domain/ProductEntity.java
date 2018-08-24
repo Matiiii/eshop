@@ -1,7 +1,7 @@
 package com.capgemini.eshop.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,16 +12,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.capgemini.eshop.domain.embeddable.Audit;
+import com.capgemini.eshop.domain.embeddable.AbstractEntity;
 
 @Entity
 @Table(name = "product")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class ProductEntity extends Audit {
+public class ProductEntity extends AbstractEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5396366919956075720L;
 
 	@Id
@@ -37,19 +34,19 @@ public class ProductEntity extends Audit {
 	private Integer weight;
 
 	@ManyToMany(mappedBy = "products")
-	private List<OrderEntity> orders = new ArrayList<>();
+	private Set<TransactionEntity> transactions = new HashSet<>();
 
 	public ProductEntity() {
 	}
 
 	public ProductEntity(Long id, String name, Double price, Double retailMargin, Integer weight,
-			List<OrderEntity> orders) {
+			Set<TransactionEntity> transactions) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.retailMargin = retailMargin;
 		this.weight = weight;
-		this.orders = orders;
+		this.transactions = transactions;
 	}
 
 	public Long getId() {
@@ -92,12 +89,18 @@ public class ProductEntity extends Audit {
 		this.weight = weight;
 	}
 
-	public List<OrderEntity> getOrders() {
-		return orders;
+	public Set<TransactionEntity> getTransactions() {
+		return transactions;
 	}
 
-	public void setOrders(List<OrderEntity> orders) {
-		this.orders = orders;
+	public void setTransactions(Set<TransactionEntity> transactions) {
+		this.transactions = transactions;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductEntity [id=" + id + ", name=" + name + ", retailMargin=" + retailMargin + ", price=" + price
+				+ ", weight=" + weight + ", transactions=" + transactions + "]";
 	}
 
 }
