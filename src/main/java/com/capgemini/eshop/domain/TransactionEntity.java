@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,6 +52,20 @@ public class TransactionEntity extends AbstractEntity {
 
 	@Transient
 	private int countProducts;
+
+	private Double sumCost;
+
+	@PrePersist
+	@PreUpdate
+	public void setSumCost() {
+		Double sum = products.stream().mapToDouble(productEntity -> productEntity.getPriceWithMargin()).sum();
+		this.sumCost = sum;
+	}
+
+	public Double getSumCost() {
+		setSumCost();
+		return sumCost;
+	}
 
 	@ManyToOne
 	private CustomerEntity customer;

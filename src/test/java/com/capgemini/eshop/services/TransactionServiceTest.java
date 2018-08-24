@@ -7,7 +7,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.capgemini.eshop.dao.impl.TransactionSearchCriteria;
 import com.capgemini.eshop.enums.Status;
 import com.capgemini.eshop.service.CustomerService;
 import com.capgemini.eshop.service.ProductService;
@@ -238,8 +241,110 @@ public class TransactionServiceTest {
 
 			dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(), productListProductOver7000);
 			// then
-
 		}
+
+	}
+
+	@Transactional
+	@Test
+	public void shouldReturnSetListOf3Transactions() {
+
+		// given
+
+		CustomerTO savedCustomer = dataCreator.saveNewCustomerJanusz();
+
+		ProductTO savedProduct = dataCreator.saveNewProductMlotek();
+		ProductTO savedProduct2 = dataCreator.saveNewProductMajty();
+
+		List<Long> productList = new ArrayList<>();
+		productList.add(savedProduct.getId());
+		productList.add(savedProduct.getId());
+		productList.add(savedProduct.getId());
+		productList.add(savedProduct2.getId());
+		productList.add(savedProduct2.getId());
+
+		TransactionTO savedTransaction = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productList);
+		savedTransaction.setCurrentStatus(Status.COMPLETED);
+
+		transactionService.updateTransaction(savedTransaction);
+
+		TransactionTO savedTransaction2 = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productList);
+		savedTransaction2.setCurrentStatus(Status.COMPLETED);
+		transactionService.updateTransaction(savedTransaction2);
+
+		TransactionTO savedTransaction3 = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productList);
+		savedTransaction3.setCurrentStatus(Status.COMPLETED);
+		transactionService.updateTransaction(savedTransaction3);
+
+		// when
+
+		Set<TransactionTO> transactions = transactionService.findTransaktionsByCustomerId(savedCustomer.getId());
+
+		// then
+
+		assertNotNull(transactions);
+		assertEquals(3, transactions.size());
+
+	}
+
+	@Transactional
+	@Test
+	public void shouldSerchByCriteria() {
+
+		// given
+
+		CustomerTO savedCustomer = dataCreator.saveNewCustomerJanusz();
+
+		ProductTO savedProduct = dataCreator.saveNewProductMlotek();
+		ProductTO savedProduct2 = dataCreator.saveNewProductMajty();
+		ProductTO savedProduct3 = dataCreator.saveNewProductTv();
+
+		List<Long> productList = new ArrayList<>();
+		productList.add(savedProduct.getId());
+		productList.add(savedProduct.getId());
+		productList.add(savedProduct.getId());
+		productList.add(savedProduct2.getId());
+		productList.add(savedProduct2.getId());
+
+		List<Long> productList2 = new ArrayList<>();
+		productList2.add(savedProduct3.getId());
+
+		TransactionTO savedTransaction = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productList);
+		savedTransaction.setDate(new Date(1990, 12, 12));
+		savedTransaction.setCurrentStatus(Status.COMPLETED);
+
+		transactionService.updateTransaction(savedTransaction);
+
+		TransactionTO savedTransaction2 = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productList);
+		savedTransaction2.setCurrentStatus(Status.COMPLETED);
+		transactionService.updateTransaction(savedTransaction2);
+
+		TransactionTO savedTransaction3 = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productList);
+		savedTransaction3.setCurrentStatus(Status.COMPLETED);
+		transactionService.updateTransaction(savedTransaction3);
+
+		// when
+		TransactionSearchCriteria criteria = new TransactionSearchCriteria();
+		// criteria.setCustomerName("Janusz");
+		criteria.setCostMin(0.0);
+		criteria.setCostMax(100000.0);
+		// criteria.setTransactionStart(new Date(1800, 1, 1));
+		// criteria.setTransactionStop(new Date(1999, 1, 1));
+		// criteria.setProductId(savedProduct.getId());
+
+		Set<TransactionTO> transactions = transactionService.findTransactionByCriteria(criteria);
+
+		// then
+
+		assertNotNull(transactions);
+		assertEquals(3, transactions.size());
+
 	}
 
 }

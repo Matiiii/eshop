@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.capgemini.eshop.dao.CustomerDao;
 import com.capgemini.eshop.dao.ProductDao;
 import com.capgemini.eshop.dao.TransactionDao;
+import com.capgemini.eshop.dao.impl.TransactionSearchCriteria;
 import com.capgemini.eshop.domain.CustomerEntity;
 import com.capgemini.eshop.domain.ProductEntity;
 import com.capgemini.eshop.domain.TransactionEntity;
@@ -83,14 +84,14 @@ public class TransactionServiceImpl implements TransactionService {
 
 		List<ProductEntity> productPrice = new ArrayList<>();
 		products.stream().forEach(productId -> productPrice.add(productRepository.findOne(productId)));
-		Double sum = productPrice.stream().mapToDouble(productEntity -> productEntity.getPrice()).sum();
+		Double sum = productPrice.stream().mapToDouble(productEntity -> productEntity.getPriceWithMargin()).sum();
 
 		return sum;
 	}
 
 	private boolean isMoreLike5SameProductsOver7000(List<Long> products) {
 		Set<Long> productsOver7000 = products.stream().map(productId -> productRepository.findOne(productId))
-				.filter(product -> product.getPrice() > 7000).map(product -> product.getId())
+				.filter(product -> product.getPriceWithMargin() > 7000).map(product -> product.getId())
 				.collect(Collectors.toSet());
 		productsOver7000.stream().map(productIdOver7000 -> products.stream()
 				.filter(productId -> productId.equals(productIdOver7000)).count());
@@ -169,6 +170,14 @@ public class TransactionServiceImpl implements TransactionService {
 
 		return transactionMapper.map2To(
 				transactionRepository.findTransactionByCustomerId(customerId).stream().collect(Collectors.toSet()));
+
+	}
+
+	@Override
+	public Set<TransactionTO> findTransactionByCriteria(TransactionSearchCriteria criteria) {
+		Set<TransactionEntity> result = transactionRepository.findTransactionByCritria(criteria).stream()
+				.collect(Collectors.toSet());
+		return transactionMapper.map2To(result);
 
 	}
 

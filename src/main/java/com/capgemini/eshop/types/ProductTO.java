@@ -14,6 +14,7 @@ public class ProductTO {
 
 	private Set<Long> transactions = new HashSet<>();
 
+	private Double priceWithMargin;
 	private int version;
 	private Date created;
 	private Date updated;
@@ -32,6 +33,8 @@ public class ProductTO {
 		this.version = version;
 		this.created = created;
 		this.updated = updated;
+
+		setPriceWithRetailMargin();
 	}
 
 	public Long getId() {
@@ -54,8 +57,15 @@ public class ProductTO {
 		return price;
 	}
 
+	public void setPriceWithRetailMargin() {
+		this.priceWithMargin = price + (price * (retailMargin / 100));
+	}
+
 	public void setPrice(Double price) {
 		this.price = price;
+		if (this.retailMargin != null) {
+			setPriceWithRetailMargin();
+		}
 	}
 
 	public Double getRetailMargin() {
@@ -64,6 +74,9 @@ public class ProductTO {
 
 	public void setRetailMargin(Double retailMargin) {
 		this.retailMargin = retailMargin;
+		if (this.price != null) {
+			setPriceWithRetailMargin();
+		}
 	}
 
 	public Integer getWeight() {
@@ -104,6 +117,10 @@ public class ProductTO {
 
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+
+	public Double getPriceWithMargin() {
+		return priceWithMargin;
 	}
 
 	public static ProductTOBuilder builder() {

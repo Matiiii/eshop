@@ -2,6 +2,7 @@ package com.capgemini.eshop.service;
 
 import java.util.Set;
 
+import com.capgemini.eshop.dao.impl.TransactionSearchCriteria;
 import com.capgemini.eshop.types.TransactionTO;
 
 public interface TransactionService {
@@ -17,5 +18,7 @@ public interface TransactionService {
 	TransactionTO updateTransaction(TransactionTO newTransaction);
 
 	Set<TransactionTO> findTransaktionsByCustomerId(Long customerId);
+
+	Set<TransactionTO> findTransactionByCriteria(TransactionSearchCriteria criteria);
 
 }

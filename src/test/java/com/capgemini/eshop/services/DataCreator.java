@@ -86,8 +86,7 @@ public class DataCreator {
 
 	public ProductTO saveNewProductMlotek() {
 
-		ProductTO productToSave = ProductTO.builder().name("Młotek").price(500.0).retailMargin(25.0).weight(500)
-				.build();
+		ProductTO productToSave = ProductTO.builder().name("Młotek").price(500.0).retailMargin(0.0).weight(500).build();
 
 		return productService.saveNewProduct(productToSave);
 	}
