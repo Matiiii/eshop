@@ -8,10 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.capgemini.eshop.dao.TransactionDaoCustom;
-import com.capgemini.eshop.domain.QCustomerEntity;
-import com.capgemini.eshop.domain.QProductEntity;
-import com.capgemini.eshop.domain.QTransactionEntity;
 import com.capgemini.eshop.domain.TransactionEntity;
+import com.capgemini.eshop.domain.qdsl.QCustomerEntity;
+import com.capgemini.eshop.domain.qdsl.QProductEntity;
+import com.capgemini.eshop.domain.qdsl.QTransactionEntity;
 import com.capgemini.eshop.enums.Status;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;

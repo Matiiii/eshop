@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.capgemini.eshop.dao.CustomerDaoCustom;
 import com.capgemini.eshop.dao.ProductDao;
 import com.capgemini.eshop.domain.CustomerEntity;
-import com.capgemini.eshop.domain.QCustomerEntity;
-import com.capgemini.eshop.domain.QProductEntity;
-import com.capgemini.eshop.domain.QTransactionEntity;
+import com.capgemini.eshop.domain.qdsl.QCustomerEntity;
+import com.capgemini.eshop.domain.qdsl.QProductEntity;
+import com.capgemini.eshop.domain.qdsl.QTransactionEntity;
 import com.capgemini.eshop.enums.Status;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

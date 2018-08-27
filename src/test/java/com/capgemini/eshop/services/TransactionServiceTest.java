@@ -881,4 +881,35 @@ public class TransactionServiceTest {
 
 	}
 
+	@Transactional
+	@Test
+	public void shouldAddProductShipingTransactionOver25Kg() {
+
+		// given
+
+		CustomerTO savedCustomer = dataCreator.saveNewCustomerJanusz();
+		ProductTO savedProduct = dataCreator.saveNewProductSztabka();
+
+		List<Long> productListOver25kg = new ArrayList<>();
+		for (int i = 0; i < 28; i++) {
+			productListOver25kg.add(savedProduct.getId());
+		}
+
+		// when
+
+		TransactionTO savedTransactionOver25kg = dataCreator.seveNewProductsOrderForCustomer(savedCustomer.getId(),
+				productListOver25kg);
+		// then
+
+		TransactionTO selectedTransaction = transactionService.findTransactionById(savedTransactionOver25kg.getId());
+
+		assertNotNull(selectedTransaction);
+		assertEquals(savedTransactionOver25kg.getId(), selectedTransaction.getId());
+		assertEquals(Status.REQUIRED_CONFIRMATION, selectedTransaction.getCurrentStatus());
+		assertEquals(29, selectedTransaction.getProducts().size());
+		assertEquals(new Double(363), transactionService.sumOfAllTransactionByCustomerIdAndStatus(savedCustomer.getId(),
+				Status.REQUIRED_CONFIRMATION));
+
+	}
+
 }

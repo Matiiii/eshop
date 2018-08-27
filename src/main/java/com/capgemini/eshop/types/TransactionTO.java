@@ -103,10 +103,6 @@ public class TransactionTO {
 		this.customer = customer;
 	}
 
-	public void getSumCost() {
-
-	}
-
 	public static OrderTOBuilder builder() {
 		return new OrderTOBuilder();
 	}

@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.capgemini.eshop.enums.Status;
@@ -224,6 +225,26 @@ public class ProductServiceTest {
 		assertEquals(savedProduct2.getId(), resultList.get(1).getId());
 		assertEquals(savedProduct.getId(), resultList.get(2).getId());
 		assertEquals(savedProduct3.getId(), resultList.get(3).getId());
+
+	}
+
+	@Transactional
+	@Test(expected = OptimisticLockingFailureException.class)
+	public void shouldNotUpdateProduct() {
+
+		// given
+
+		ProductTO savedProduct = dataCreator.saveNewProductMajty();
+		savedProduct.setPrice(32.2);
+		savedProduct.setRetailMargin(50.0);
+		// when
+
+		ProductTO updatedProduct = productService.updateProduct(savedProduct);
+
+		savedProduct.setVersion(100);
+		savedProduct.setPrice(50.2);
+		savedProduct.setRetailMargin(100.0);
+		productService.updateProduct(savedProduct);
 
 	}
 

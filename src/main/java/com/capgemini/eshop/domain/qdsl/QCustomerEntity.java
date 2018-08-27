@@ -1,4 +1,4 @@
-package com.capgemini.eshop.domain;
+package com.capgemini.eshop.domain.qdsl;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -6,6 +6,9 @@ import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
+
+import com.capgemini.eshop.domain.CustomerEntity;
+import com.capgemini.eshop.domain.TransactionEntity;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
 
@@ -22,9 +25,9 @@ public class QCustomerEntity extends EntityPathBase<CustomerEntity> {
 
     public static final QCustomerEntity customerEntity = new QCustomerEntity("customerEntity");
 
-    public final com.capgemini.eshop.domain.embeddable.QAbstractEntity _super = new com.capgemini.eshop.domain.embeddable.QAbstractEntity(this);
+    public final com.capgemini.eshop.domain.embeddable.qdsl.QAbstractEntity _super = new com.capgemini.eshop.domain.embeddable.qdsl.QAbstractEntity(this);
 
-    public final com.capgemini.eshop.domain.embeddable.QAddress address;
+    public final com.capgemini.eshop.domain.embeddable.qdsl.QAddress address;
 
     //inherited
     public final DateTimePath<java.util.Date> created = _super.created;
@@ -33,7 +36,7 @@ public class QCustomerEntity extends EntityPathBase<CustomerEntity> {
 
     public final SetPath<TransactionEntity, QTransactionEntity> orders = this.<TransactionEntity, QTransactionEntity>createSet("orders", TransactionEntity.class, QTransactionEntity.class, PathInits.DIRECT2);
 
-    public final com.capgemini.eshop.domain.embeddable.QPersonalDetail personalDetail;
+    public final com.capgemini.eshop.domain.embeddable.qdsl.QPersonalDetail personalDetail;
 
     //inherited
     public final DateTimePath<java.util.Date> updated = _super.updated;
@@ -59,8 +62,8 @@ public class QCustomerEntity extends EntityPathBase<CustomerEntity> {
 
     public QCustomerEntity(Class<? extends CustomerEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.address = inits.isInitialized("address") ? new com.capgemini.eshop.domain.embeddable.QAddress(forProperty("address")) : null;
-        this.personalDetail = inits.isInitialized("personalDetail") ? new com.capgemini.eshop.domain.embeddable.QPersonalDetail(forProperty("personalDetail")) : null;
+        this.address = inits.isInitialized("address") ? new com.capgemini.eshop.domain.embeddable.qdsl.QAddress(forProperty("address")) : null;
+        this.personalDetail = inits.isInitialized("personalDetail") ? new com.capgemini.eshop.domain.embeddable.qdsl.QPersonalDetail(forProperty("personalDetail")) : null;
     }
 
 }

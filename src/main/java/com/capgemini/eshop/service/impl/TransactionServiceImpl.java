@@ -24,6 +24,8 @@ import com.capgemini.eshop.enums.Status;
 import com.capgemini.eshop.exceptions.Message;
 import com.capgemini.eshop.mappers.TransactionMapper;
 import com.capgemini.eshop.service.TransactionService;
+import com.capgemini.eshop.services.DataCreator;
+import com.capgemini.eshop.types.ProductTO;
 import com.capgemini.eshop.types.TransactionTO;
 
 @Transactional(value = TxType.REQUIRED)
@@ -42,13 +44,18 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	TransactionMapper transactionMapper;
 
+	@Autowired
+	DataCreator dataCreator;
+
 	@Override
 	public TransactionTO saveNewTransaction(TransactionTO newTransaction) {
-
+		// Validation
 		Preconditions.checkNotNull(newTransaction, Message.EMPTY_OBJECT);
 		checkCustomer(newTransaction.getCustomer());
 		checkProductList(newTransaction.getProducts(), newTransaction.getCustomer());
+		newTransaction = checkForShipment(newTransaction);
 
+		// Map to entity
 		TransactionEntity orderToSave = transactionMapper.map(newTransaction);
 		orderToSave.setCustomer(customerRepository.findOne(newTransaction.getCustomer()));
 
@@ -56,8 +63,10 @@ public class TransactionServiceImpl implements TransactionService {
 		newTransaction.getProducts().stream().forEach(product -> productsToAdd.add(productRepository.findOne(product)));
 		orderToSave.getProducts().addAll(productsToAdd);
 
+		// Save
 		TransactionEntity savedOrder = transactionRepository.save(orderToSave);
 
+		// Add to relation
 		CustomerEntity customerToUpdate = savedOrder.getCustomer();
 		customerToUpdate.getOrders().add(savedOrder);
 		customerRepository.save(customerToUpdate);
@@ -86,9 +95,35 @@ public class TransactionServiceImpl implements TransactionService {
 
 		List<ProductEntity> productPrice = new ArrayList<>();
 		products.stream().forEach(productId -> productPrice.add(productRepository.findOne(productId)));
-		Double sum = productPrice.stream().mapToDouble(productEntity -> productEntity.getPriceWithMargin()).sum();
+		return productPrice.stream().mapToDouble(productEntity -> productEntity.getPriceWithMargin()).sum();
 
-		return sum;
+	}
+
+	private TransactionTO checkForShipment(TransactionTO transactionTO) {
+
+		List<Long> productList = transactionTO.getProducts();
+		if (isMoreLike25kilogramInTransaction(productList)) {
+
+			ProductTO shiping = dataCreator.saveSpecialShipingProduct();
+
+			// add special shipment product
+			productList.add(shiping.getId());
+			transactionTO.setProducts(productList);
+
+			// add special status
+			transactionTO.setCurrentStatus(Status.REQUIRED_CONFIRMATION);
+
+		}
+		return transactionTO;
+	}
+
+	private boolean isMoreLike25kilogramInTransaction(List<Long> products) {
+
+		Integer weightTransaction = products.stream()
+				.mapToInt(productId -> productRepository.findOne(productId).getWeight()).sum();
+
+		return weightTransaction > 25000;
+
 	}
 
 	private boolean isMoreLike5SameProductsOver7000(List<Long> products) {
@@ -101,11 +136,7 @@ public class TransactionServiceImpl implements TransactionService {
 				productIdOver7000 -> products.stream().filter(productId -> productId.equals(productIdOver7000)).count())
 				.collect(Collectors.toList());
 
-		if (countList.stream().anyMatch(count -> count > 5)) {
-			return true;
-		}
-
-		return false;
+		return countList.stream().anyMatch(count -> count > 5);
 
 	}
 
@@ -114,9 +145,7 @@ public class TransactionServiceImpl implements TransactionService {
 		products.stream().forEach(productId -> isProductExist(productId));
 
 		if (isMoreLike5SameProductsOver7000(products)) {
-
 			throw new RuntimeException("The transaction has more than 5 of the same products more expensive than 7000");
-
 		}
 
 		if (sumPriceProducts(products) > 5000 && countRealizedTransactionsByCustomerId(customerId) < 3) {

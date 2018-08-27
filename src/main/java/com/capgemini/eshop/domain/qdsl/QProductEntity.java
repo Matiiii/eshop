@@ -1,4 +1,4 @@
-package com.capgemini.eshop.domain;
+package com.capgemini.eshop.domain.qdsl;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -6,6 +6,9 @@ import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
+
+import com.capgemini.eshop.domain.ProductEntity;
+import com.capgemini.eshop.domain.TransactionEntity;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
 
@@ -20,7 +23,7 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public static final QProductEntity productEntity = new QProductEntity("productEntity");
 
-    public final com.capgemini.eshop.domain.embeddable.QAbstractEntity _super = new com.capgemini.eshop.domain.embeddable.QAbstractEntity(this);
+    public final com.capgemini.eshop.domain.embeddable.qdsl.QAbstractEntity _super = new com.capgemini.eshop.domain.embeddable.qdsl.QAbstractEntity(this);
 
     //inherited
     public final DateTimePath<java.util.Date> created = _super.created;

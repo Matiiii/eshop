@@ -1,9 +1,11 @@
-package com.capgemini.eshop.domain;
+package com.capgemini.eshop.domain.qdsl;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import javax.annotation.Generated;
 
+import com.capgemini.eshop.domain.ProductEntity;
+import com.capgemini.eshop.domain.TransactionEntity;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.DatePath;
@@ -26,7 +28,7 @@ public class QTransactionEntity extends EntityPathBase<TransactionEntity> {
 
 	public static final QTransactionEntity transactionEntity = new QTransactionEntity("transactionEntity");
 
-	public final com.capgemini.eshop.domain.embeddable.QAbstractEntity _super = new com.capgemini.eshop.domain.embeddable.QAbstractEntity(
+	public final com.capgemini.eshop.domain.embeddable.qdsl.QAbstractEntity _super = new com.capgemini.eshop.domain.embeddable.qdsl.QAbstractEntity(
 			this);
 
 	// inherited

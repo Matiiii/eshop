@@ -158,4 +158,20 @@ public class DataCreator {
 
 	}
 
+	public ProductTO saveSpecialShipingProduct() {
+
+		ProductTO productToSave = ProductTO.builder().name("Special Shiping").price(50.0).retailMargin(10.0).weight(0)
+				.build();
+		return productService.saveNewProduct(productToSave);
+
+	}
+
+	public ProductTO saveNewProductSztabka() {
+
+		ProductTO productToSave = ProductTO.builder().name("Sztabka").price(10.0).retailMargin(10.0).weight(1000)
+				.build();
+		return productService.saveNewProduct(productToSave);
+
+	}
+
 }

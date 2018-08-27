@@ -1,4 +1,4 @@
-package com.capgemini.eshop.domain.embeddable;
+package com.capgemini.eshop.domain.embeddable.qdsl;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -6,6 +6,8 @@ import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
+
+import com.capgemini.eshop.domain.embeddable.PersonalDetail;
 import com.querydsl.core.types.Path;
 
 
