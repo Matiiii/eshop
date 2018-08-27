@@ -248,4 +248,22 @@ public class ProductServiceTest {
 
 	}
 
+	@Test(expected = OptimisticLockingFailureException.class)
+	public void shouldNotUpdateProduct2() {
+
+		// given
+
+		ProductTO savedProduct = dataCreator.saveNewProductMajty();
+		savedProduct.setPrice(32.2);
+		savedProduct.setRetailMargin(50.0);
+		// when
+
+		ProductTO updatedProduct = productService.updateProduct(savedProduct);
+
+		savedProduct.setPrice(50.2);
+		savedProduct.setRetailMargin(100.0);
+		productService.updateProduct(savedProduct);
+
+	}
+
 }
