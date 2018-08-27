@@ -202,4 +202,11 @@ public class ProductTO {
 
 	}
 
+	@Override
+	public String toString() {
+		return "ProductTO [id=" + id + ", name=" + name + ", price=" + price + ", retailMargin=" + retailMargin
+				+ ", weight=" + weight + ", transactions=" + transactions + ", priceWithMargin=" + priceWithMargin
+				+ ", version=" + version + ", created=" + created + ", updated=" + updated + "]";
+	}
+
 }

@@ -68,18 +68,70 @@ public class DataCreator {
 
 	}
 
+	public CustomerTO saveNewCustomerWiola() {
+
+		Set<Long> orders = new HashSet<>();
+		PersonalDetail personalDetail = new PersonalDetail();
+		personalDetail.setName("Wiola");
+		personalDetail.setSurname("Wisniewska");
+		personalDetail.setPesel(90080132454545L);
+		personalDetail.setBirthday(new Date(90, 8, 1));
+		personalDetail.setEmail("wiolka@gmail.com");
+
+		Address address = new Address("Towarowa", "Poznań", "60-655", "2b", "Poland");
+
+		CustomerTO newCustomer = CustomerTO.builder().address(address).personalDetail(personalDetail).orders(orders)
+				.build();
+		return customerService.saveNewCustomer(newCustomer);
+
+	}
+
+	public CustomerTO saveNewCustomerRychu() {
+
+		Set<Long> orders = new HashSet<>();
+		PersonalDetail personalDetail = new PersonalDetail();
+		personalDetail.setName("Ryszard");
+		personalDetail.setSurname("Taxidriver");
+		personalDetail.setPesel(90080132454545L);
+		personalDetail.setBirthday(new Date(90, 8, 1));
+		personalDetail.setEmail("taxi@gmail.com");
+
+		Address address = new Address("Towarowa", "Poznań", "60-655", "2b", "Poland");
+
+		CustomerTO newCustomer = CustomerTO.builder().address(address).personalDetail(personalDetail).orders(orders)
+				.build();
+		return customerService.saveNewCustomer(newCustomer);
+
+	}
+
+	public CustomerTO saveNewCustomerSebix() {
+
+		Set<Long> orders = new HashSet<>();
+		PersonalDetail personalDetail = new PersonalDetail();
+		personalDetail.setName("Seba");
+		personalDetail.setSurname("Typowy");
+		personalDetail.setPesel(90080132454545L);
+		personalDetail.setBirthday(new Date(90, 8, 1));
+		personalDetail.setEmail("taxi@gmail.com");
+
+		Address address = new Address("Towarowa", "Poznań", "60-655", "2b", "Poland");
+
+		CustomerTO newCustomer = CustomerTO.builder().address(address).personalDetail(personalDetail).orders(orders)
+				.build();
+		return customerService.saveNewCustomer(newCustomer);
+
+	}
+
 	public TransactionTO seveNewProductsOrderForCustomer(Long customerId, List<Long> productsId) {
 
 		TransactionTO orderTosave = TransactionTO.builder().date(new Date()).currentStatus(Status.WAITING_FOR_PAYMENT)
 				.products(productsId).customer(customerId).build();
-
 		return orderService.saveNewTransaction(orderTosave);
 	}
 
 	public ProductTO saveNewProductMajty() {
 
-		ProductTO productToSave = ProductTO.builder().name("Majty").price(22.5).retailMargin(10.0).weight(50).build();
-
+		ProductTO productToSave = ProductTO.builder().name("Majty").price(20.0).retailMargin(10.0).weight(50).build();
 		return productService.saveNewProduct(productToSave);
 
 	}
@@ -87,7 +139,6 @@ public class DataCreator {
 	public ProductTO saveNewProductMlotek() {
 
 		ProductTO productToSave = ProductTO.builder().name("Młotek").price(500.0).retailMargin(0.0).weight(500).build();
-
 		return productService.saveNewProduct(productToSave);
 	}
 
@@ -95,7 +146,14 @@ public class DataCreator {
 
 		ProductTO productToSave = ProductTO.builder().name("Telewizor").price(8000.0).retailMargin(25.0).weight(500)
 				.build();
+		return productService.saveNewProduct(productToSave);
 
+	}
+
+	public ProductTO saveNewProductToster() {
+
+		ProductTO productToSave = ProductTO.builder().name("Toster").price(150.0).retailMargin(10.0).weight(500)
+				.build();
 		return productService.saveNewProduct(productToSave);
 
 	}

@@ -1,6 +1,7 @@
 package com.capgemini.eshop.mappers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,13 +46,13 @@ public class ProductMapper {
 		return null;
 	}
 
-	public Set<ProductTO> map2To(Set<ProductEntity> productEntity) {
-		return productEntity.stream().map(this::map).collect(Collectors.toSet());
+	public List<ProductTO> map2To(List<ProductEntity> productEntity) {
+		return productEntity.stream().map(this::map).collect(Collectors.toList());
 
 	}
 
-	public Set<ProductEntity> map2Entity(Set<ProductTO> productTO) {
-		return productTO.stream().map(this::map).collect(Collectors.toSet());
+	public List<ProductEntity> map2Entity(List<ProductTO> productTO) {
+		return productTO.stream().map(this::map).collect(Collectors.toList());
 	}
 
 }

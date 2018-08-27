@@ -38,6 +38,7 @@ public class TransactionMapper {
 			orderEntity.setDate(orderTO.getDate());
 			orderEntity.setCurrentStatus(orderTO.getCurrentStatus());
 			orderEntity.setVersion(orderTO.getVersion());
+			orderEntity.setSumCost();
 
 			return orderEntity;
 

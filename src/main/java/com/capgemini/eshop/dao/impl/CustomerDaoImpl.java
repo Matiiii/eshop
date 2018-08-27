@@ -1,5 +1,6 @@
 package com.capgemini.eshop.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import com.capgemini.eshop.domain.CustomerEntity;
 import com.capgemini.eshop.domain.QCustomerEntity;
 import com.capgemini.eshop.domain.QProductEntity;
 import com.capgemini.eshop.domain.QTransactionEntity;
+import com.capgemini.eshop.enums.Status;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public class CustomerDaoImpl implements CustomerDaoCustom {
@@ -40,10 +42,11 @@ public class CustomerDaoImpl implements CustomerDaoCustom {
 	}
 
 	@Override
-	public List<CustomerEntity> find3CustomerWhoSpendMostInYear() {
-		return null;
-		// return qf.selectFrom(qcustomer).join(qcustomer.orders,
-		// qtransaction).join(qtransaction.products, qproduct).where(o)
+	public List<CustomerEntity> find3CustomersWhoSpentMostInPeriod(Date from, Date to) {
+		return qf.select(qcustomer).from(qtransaction).innerJoin(qtransaction.customer, qcustomer)
+				.where(qtransaction.date.between(from, to)).where(qtransaction.currentStatus.eq(Status.COMPLETED))
+				.groupBy(qcustomer.id).orderBy(qtransaction.sumCost.sum().desc()).limit(3).fetch();
+
 	}
 
 }

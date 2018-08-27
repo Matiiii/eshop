@@ -63,7 +63,7 @@ public class TransactionEntity extends AbstractEntity {
 	}
 
 	public Double getSumCost() {
-		setSumCost();
+
 		return sumCost;
 	}
 

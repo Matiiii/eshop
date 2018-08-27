@@ -14,6 +14,7 @@ public class TransactionTO {
 
 	private Long customer;
 
+	private Double sumCost;
 	private int countProducts;
 	private int version;
 	private Date created;
@@ -100,6 +101,10 @@ public class TransactionTO {
 
 	public void setCustomer(Long customer) {
 		this.customer = customer;
+	}
+
+	public void getSumCost() {
+
 	}
 
 	public static OrderTOBuilder builder() {

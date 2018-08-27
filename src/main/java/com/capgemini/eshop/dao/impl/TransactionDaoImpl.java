@@ -1,5 +1,6 @@
 package com.capgemini.eshop.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import com.capgemini.eshop.domain.QCustomerEntity;
 import com.capgemini.eshop.domain.QProductEntity;
 import com.capgemini.eshop.domain.QTransactionEntity;
 import com.capgemini.eshop.domain.TransactionEntity;
+import com.capgemini.eshop.enums.Status;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -35,33 +37,62 @@ public class TransactionDaoImpl implements TransactionDaoCustom {
 	}
 
 	@Override
-	public List<TransactionEntity> findTransactionByCustomerId(Long customerId) {
+	public List<TransactionEntity> findTransactionsByCustomerId(Long customerId) {
 		return qf.selectFrom(qtransaction).join(qtransaction.customer, qcustomer)
 				.where(qtransaction.customer.id.eq(customerId)).fetch();
 
 	}
 
 	@Override
-	public List<TransactionEntity> findTransactionByCritria(TransactionSearchCriteria criteria) {
+	public List<TransactionEntity> findTransactionsByCritria(TransactionSearchCriteria criteria) {
 		criteria.checkCriteria();
-		BooleanBuilder serchQuery = new BooleanBuilder();
+		BooleanBuilder serachQuery = new BooleanBuilder();
 
 		if (criteria.getCustomerName() != null) {
-			serchQuery.and(qtransaction.customer.personalDetail.name.eq(criteria.getCustomerName()));
+			serachQuery.and(qtransaction.customer.personalDetail.name.eq(criteria.getCustomerName()));
 		}
 		if (criteria.getProductId() != null) {
-			serchQuery.and(qproduct.id.eq(criteria.getProductId()));
+			serachQuery.and(qproduct.id.eq(criteria.getProductId()));
 
 		}
-		if (criteria.getCostMin() != null && criteria.getCostMin() != null) {
-			serchQuery.and(qtransaction.sumCost.between(criteria.getCostMin(), criteria.getCostMin()));
+		if (criteria.getCostMin() != null && criteria.getCostMax() != null) {
+			serachQuery.and(qtransaction.sumCost.between(criteria.getCostMin(), criteria.getCostMax()));
 		}
 		if ((criteria.getTransactionStart() != null) && (criteria.getTransactionStop() != null)) {
 
-			serchQuery.and(qtransaction.date.between(criteria.getTransactionStart(), criteria.getTransactionStop()));
+			serachQuery.and(qtransaction.date.between(criteria.getTransactionStart(), criteria.getTransactionStop()));
 		}
 
-		return qf.selectFrom(qtransaction).join(qtransaction.products, qproduct).where(serchQuery).fetch();
+		return qf.selectFrom(qtransaction).innerJoin(qtransaction.products, qproduct).where(serachQuery).fetch();
+
+	}
+
+	@Override
+	public Double sumOfAllTransactionsByCustomerId(Long customerId) {
+
+		return qf.select(qtransaction.sumCost.sum()).from(qtransaction).where(qtransaction.customer.id.eq(customerId))
+				.fetchOne();
+	}
+
+	@Override
+	public Double sumOfAllTransactionsByCustomerIdAndStatus(Long customerId, Status status) {
+
+		return qf.select(qtransaction.sumCost.sum()).from(qtransaction).where(qtransaction.customer.id.eq(customerId))
+				.where(qtransaction.currentStatus.eq(status)).fetchOne();
+	}
+
+	@Override
+	public Double sumOfAllTransactionsByStatus(Status status) {
+
+		return qf.select(qtransaction.sumCost.sum()).from(qtransaction).where(qtransaction.currentStatus.eq(status))
+				.fetchOne();
+	}
+
+	@Override
+	public Double calculateProfitInPeriod(Date from, Date to) {
+		return qf.select((qproduct.price.multiply(qproduct.retailMargin).divide(100)).sum()).from(qtransaction)
+				.innerJoin(qtransaction.products, qproduct).where(qtransaction.date.between(from, to))
+				.where(qtransaction.currentStatus.eq(Status.COMPLETED)).fetchOne();
 
 	}
 

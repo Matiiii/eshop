@@ -19,18 +19,6 @@ public class TransactionSearchCriteria {
 	public TransactionSearchCriteria() {
 	}
 
-	public TransactionSearchCriteria(String customerName, Date transactionStart, Date transactionStop, Long productId,
-			Double costMin, Double costMax) {
-		this.customerName = customerName;
-		this.transactionStart = transactionStart;
-		this.transactionStop = transactionStop;
-		this.productId = productId;
-		this.costMin = costMin;
-		this.costMax = costMax;
-
-		checkCriteria();
-	}
-
 	public void checkCriteria() {
 		if ((costMin != null && costMax == null) || (costMin == null && costMax != null)
 				|| (costMin != null && costMax != null && costMin > costMax)) {

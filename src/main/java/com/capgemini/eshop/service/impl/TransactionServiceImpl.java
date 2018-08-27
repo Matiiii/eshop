@@ -1,11 +1,13 @@
 package com.capgemini.eshop.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import org.assertj.core.util.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import com.capgemini.eshop.mappers.TransactionMapper;
 import com.capgemini.eshop.service.TransactionService;
 import com.capgemini.eshop.types.TransactionTO;
 
-@Transactional
+@Transactional(value = TxType.REQUIRED)
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
@@ -90,12 +92,16 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	private boolean isMoreLike5SameProductsOver7000(List<Long> products) {
+
 		Set<Long> productsOver7000 = products.stream().map(productId -> productRepository.findOne(productId))
 				.filter(product -> product.getPriceWithMargin() > 7000).map(product -> product.getId())
 				.collect(Collectors.toSet());
-		productsOver7000.stream().map(productIdOver7000 -> products.stream()
-				.filter(productId -> productId.equals(productIdOver7000)).count());
-		if (productsOver7000.stream().anyMatch(count -> count > 5)) {
+
+		List<Long> countList = productsOver7000.stream().map(
+				productIdOver7000 -> products.stream().filter(productId -> productId.equals(productIdOver7000)).count())
+				.collect(Collectors.toList());
+
+		if (countList.stream().anyMatch(count -> count > 5)) {
 			return true;
 		}
 
@@ -169,16 +175,41 @@ public class TransactionServiceImpl implements TransactionService {
 	public Set<TransactionTO> findTransaktionsByCustomerId(Long customerId) {
 
 		return transactionMapper.map2To(
-				transactionRepository.findTransactionByCustomerId(customerId).stream().collect(Collectors.toSet()));
+				transactionRepository.findTransactionsByCustomerId(customerId).stream().collect(Collectors.toSet()));
 
 	}
 
 	@Override
 	public Set<TransactionTO> findTransactionByCriteria(TransactionSearchCriteria criteria) {
-		Set<TransactionEntity> result = transactionRepository.findTransactionByCritria(criteria).stream()
+		Set<TransactionEntity> result = transactionRepository.findTransactionsByCritria(criteria).stream()
 				.collect(Collectors.toSet());
 		return transactionMapper.map2To(result);
 
+	}
+
+	@Override
+	public Double getSumCostOfAllTransatctionsByCustomerID(Long customerId) {
+
+		return transactionRepository.sumOfAllTransactionsByCustomerId(customerId);
+
+	}
+
+	@Override
+	public Double calculateProfitInPeriod(Date from, Date to) {
+
+		return transactionRepository.calculateProfitInPeriod(from, to);
+	}
+
+	@Override
+	public Double sumOfAllTransactionByCustomerIdAndStatus(Long customerId, Status status) {
+
+		return transactionRepository.sumOfAllTransactionsByCustomerIdAndStatus(customerId, status);
+	}
+
+	@Override
+	public Double sumOfAllTransactionsByStatus(Status status) {
+
+		return transactionRepository.sumOfAllTransactionsByStatus(status);
 	}
 
 }

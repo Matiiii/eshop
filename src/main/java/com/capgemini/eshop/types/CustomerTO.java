@@ -154,4 +154,10 @@ public class CustomerTO {
 
 	}
 
+	@Override
+	public String toString() {
+		return "CustomerTO [id=" + id + ", personalDetail=" + personalDetail + ", address=" + address + ", orders="
+				+ orders + ", version=" + version + ", created=" + created + ", updated=" + updated + "]";
+	}
+
 }

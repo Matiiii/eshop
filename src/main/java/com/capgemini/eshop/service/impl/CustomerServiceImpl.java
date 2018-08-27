@@ -1,5 +1,8 @@
 package com.capgemini.eshop.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.assertj.core.util.Preconditions;
@@ -72,6 +75,12 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new RuntimeException("Customer not exist");
 		}
 
+	}
+
+	@Override
+	public List<CustomerTO> find3CustomersWhoSpentMostInPeriod(Date from, Date to) {
+
+		return customerMapper.map2To(customerRepository.find3CustomersWhoSpentMostInPeriod(from, to));
 	}
 
 }

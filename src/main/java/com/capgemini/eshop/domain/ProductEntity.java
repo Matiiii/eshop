@@ -3,7 +3,6 @@ package com.capgemini.eshop.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,9 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
-import javax.persistence.PostUpdate;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.capgemini.eshop.domain.embeddable.AbstractEntity;
 
@@ -37,7 +34,6 @@ public class ProductEntity extends AbstractEntity {
 
 	private Integer weight;
 
-	@Transient
 	private Double priceWithMargin;
 
 	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
@@ -114,8 +110,6 @@ public class ProductEntity extends AbstractEntity {
 		return priceWithMargin;
 	}
 
-	@PostConstruct
-	@PostUpdate
 	public void setPriceWithMargin() {
 		this.priceWithMargin = price + (price * (retailMargin / 100));
 	}
